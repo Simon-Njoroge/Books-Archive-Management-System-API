@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString, IsInt, IsBoolean, IsUUID, IsOptional, IsArray,MinLength,MaxLength } from 'class-validator';
+import { IsNotEmpty, IsString, IsInt, IsBoolean, IsUUID, IsOptional, IsArray,MinLength,MaxLength, IsNumber } from 'class-validator';
 
 export class CreateBookDto {
   @MinLength(2, { message: 'Title must be at least 2 characters long' })
@@ -27,6 +27,6 @@ export class CreateBookDto {
 
   @IsOptional()
   @IsArray()
-  @IsUUID('4', { each: true })
+  @IsNumber()
   categoryIds?: string[];
 }

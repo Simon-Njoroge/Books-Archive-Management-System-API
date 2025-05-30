@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsUUID, IsString, IsInt, Min, Max, MaxLength, MinLength } from 'class-validator';
+import { IsNotEmpty, IsString, IsInt, Min, Max, MaxLength, MinLength, IsNumber } from 'class-validator';
 
 export class CreateBookReviewDto {
   @MinLength(10, { message: 'Content must be at least 10 characters long' })
@@ -14,10 +14,10 @@ export class CreateBookReviewDto {
   rating: number;
 
   @IsNotEmpty()
-  @IsUUID()
+  @IsNumber()
   userId: string;
 
   @IsNotEmpty()
-  @IsUUID()
+  @IsNumber()
   bookId: string;
 }

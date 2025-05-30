@@ -10,7 +10,7 @@ import { Author } from '../author/entities/author.entity';
 @Module({
   imports: [
     DatabaseModule,
-    TypeOrmModule.forFeature([Book, Category, Category]),
+    TypeOrmModule.forFeature([Book, Category, Author]),
   ],
   controllers: [BookController],
   providers: [BookService],

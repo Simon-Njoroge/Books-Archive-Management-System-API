@@ -8,6 +8,8 @@ import { AuthorModule } from './modules/author/author.module';
 import { BookModule } from './modules/book/book.module';
 import { CategoryModule } from './modules/category/category.module';
 import { BookReviewModule } from './modules/book-review/book-review.module';
+import { SeedModule } from './modules/seed/seed.module';
+
 @Module({
   imports: [
       ConfigModule.forRoot({
@@ -19,7 +21,9 @@ import { BookReviewModule } from './modules/book-review/book-review.module';
       AuthorModule,
       BookModule,
       CategoryModule,
-      BookReviewModule
+      BookReviewModule,
+      SeedModule,
+  
   ],
   controllers: [],
   providers: [],

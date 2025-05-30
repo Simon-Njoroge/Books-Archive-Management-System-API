@@ -28,13 +28,13 @@ export class Book {
   @Column({ default: true })
   isAvailable: boolean;
 
-  @ManyToOne(() => Author, (author) => author.books)
+  @ManyToOne(() => Author, (author) => author.books,{nullable: false})
   author: Author;
 
   @OneToMany(() => BookReview, (review) => review.book)
   reviews: BookReview[];
 
-  @ManyToMany(() => Category, (category) => category.books)
+  @ManyToMany(() => Category, (category) => category.books,{eager: true})
   @JoinTable()
   categories: Category[];
 }
