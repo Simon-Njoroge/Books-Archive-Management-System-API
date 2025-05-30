@@ -1,0 +1,55 @@
+
+
+services:
+  postgres:
+    image: postgres:13-alpine
+    container_name: book_postgres
+    environment:
+     POSTGRES_USER: postgres
+     POSTGRES_PASSWORD: postgres
+     POSTGRES_DB: tourism_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - book_network
+    restart: unless-stopped
+
+  redis:
+    image: redis:6-alpine
+    container_name: book_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - book_network
+    restart: unless-stopped
+
+  app:
+    build: .
+    container_name: book_app
+    depends_on:
+      - postgres
+      - redis
+    ports:
+      - "8000:8000"
+    environment:
+      - NODE_ENV=development
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      - book_network
+    command: npm run start:dev
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  book_network:
+    driver: bridge
