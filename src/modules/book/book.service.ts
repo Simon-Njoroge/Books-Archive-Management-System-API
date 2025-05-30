@@ -1,26 +1,109 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, In } from 'typeorm';
+import { Book } from './entities/book.entity';
+import { Category } from '../category/entities/category.entity';
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 
 @Injectable()
 export class BookService {
-  create(createBookDto: CreateBookDto) {
-    return 'This action adds a new book';
+  constructor(
+    @InjectRepository(Book)
+    private readonly bookRepository: Repository<Book>,
+    @InjectRepository(Category)
+    private readonly categoryRepository: Repository<Category>,
+  ) {}
+
+  async create(createBookDto: CreateBookDto): Promise<Book> {
+    const { categoryIds, ...bookData } = createBookDto;
+
+    const categories = categoryIds && categoryIds.length
+      ? await this.categoryRepository.find({
+          where: { id: In(categoryIds) },
+        })
+      : [];
+
+    const book = this.bookRepository.create({
+      ...bookData,
+      categories,
+    });
+
+    return this.bookRepository.save(book);
   }
 
-  findAll() {
-    return `This action returns all book`;
+  async findAll(): Promise<Book[]> {
+    return this.bookRepository.find({
+      relations: ['categories', 'author', 'reviews'],
+    });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} book`;
+
+  
+async findAllFiltered(filters: {
+  title?: string;
+  authorId?: string;
+  categoryId?: string;
+}): Promise<Book[]> {
+  const query = this.bookRepository
+    .createQueryBuilder('book')
+    .leftJoinAndSelect('book.categories', 'category')
+    .leftJoinAndSelect('book.author', 'author')
+    .leftJoinAndSelect('book.reviews', 'reviews');
+
+  if (filters.title) {
+    query.andWhere('LOWER(book.title) LIKE :title', {
+      title: `%${filters.title.toLowerCase()}%`,
+    });
   }
 
-  update(id: number, updateBookDto: UpdateBookDto) {
-    return `This action updates a #${id} book`;
+  if (filters.authorId) {
+    query.andWhere('author.id = :authorId', { authorId: filters.authorId });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} book`;
+  if (filters.categoryId) {
+    query.andWhere('category.id = :categoryId', {
+      categoryId: filters.categoryId,
+    });
+  }
+
+  return query.getMany();
+}
+
+
+  async findOne(id: string): Promise<Book> {
+    const book = await this.bookRepository.findOne({
+      where: { id },
+      relations: ['categories', 'author', 'reviews'],
+    });
+
+    if (!book) {
+      throw new NotFoundException(`Book with ID ${id} not found`);
+    }
+
+    return book;
+  }
+
+  async update(id: string, updateBookDto: UpdateBookDto): Promise<Book> {
+    const book = await this.findOne(id);
+
+    const { categoryIds, ...updateData } = updateBookDto;
+
+    if (categoryIds) {
+      const categories = await this.categoryRepository.find({
+        where: { id: In(categoryIds) },
+      });
+      book.categories = categories;
+    }
+
+    Object.assign(book, updateData);
+
+    return this.bookRepository.save(book);
+  }
+
+  async remove(id: string): Promise<{ message: string }> {
+    const book = await this.findOne(id);
+    await this.bookRepository.remove(book);
+    return { message: `Book with ID ${id} has been removed.` };
   }
 }

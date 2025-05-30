@@ -9,7 +9,7 @@ import { Book } from '../../book/entities/book.entity';
 
 @Entity()
 export class Author {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()

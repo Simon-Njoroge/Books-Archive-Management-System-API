@@ -1,1 +1,121 @@
 @url=http://localhost:8000
+
+### profile crud
+###
+GET {{url}}/profile
+
+###
+POST {{url}}/profile
+Content-Type: application/json
+
+{
+    "bio": "John Doe",
+    "avatar": "https://example.com/avatar.jpg",
+    "dateOfBirth": "1990-01-01",
+    "location": "New York, USA"
+}
+
+###
+PUT {{url}}/profile
+
+{
+  "bio":"John Doe",
+  "avatar":"https://example.com/avatar.jpg",
+  "dateOfBirth":"1990-01-01",
+  "location":"New York, USA"
+  }
+
+###
+DELETE {{url}}/profile
+
+
+###category crud
+###
+GET {{url}}/category
+###
+POST {{url}}/category
+Content-Type: application/json
+
+{
+    "name": "Technology",
+    "description": "All about technology"
+}
+
+###
+PUT {{url}}/category
+
+{
+  "name":"Technology",
+  "description":"All about technology"
+}
+###
+DELETE {{url}}/category
+
+### author crud
+###
+GET {{url}}/author
+###
+POST {{url}}/author     
+Content-Type: application/json
+
+{
+    "name": "John Doe",
+    "bio": "Author bio",
+    "birthDate": "1990-01-01"
+}
+
+###
+PUT {{url}}/author
+
+{
+  "name":"John Doe",
+  "bio":"Author bio",
+  "birthDate":"1990-01-01"
+}
+###
+DELETE {{url}}/author
+
+GET {{url}}/book
+Content-Type: application/json
+
+###
+GET /book?title=javascript
+
+###
+GET /book?authorId=1
+
+###
+GET /book?categoryId=1
+
+GET {{url}}/book/1
+Content-Type: application/json
+
+### CREATE a new book
+POST {{url}}/book
+Content-Type: application/json
+
+{
+  "title": "Clean Code",
+  "description": "A Handbook of Agile Software Craftsmanship",
+  "publicationYear": 2008,
+  "isAvailable": true,
+  "authorId": "uuid-author",
+  "categoryIds": ["uuid-cat1", "uuid-cat2"]
+}
+
+
+PATCH {{url}}/book/1
+Content-Type: application/json
+
+{
+  "title": "Clean Code Updated",
+  "description": "Updated description",
+  "publicationYear": 2010,
+  "isAvailable": false,
+  "categoryIds": ["uuid-cat1"]
+}
+
+
+DELETE {{url}}/book/1
+Content-Type: application/json
+

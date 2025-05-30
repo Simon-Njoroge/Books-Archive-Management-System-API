@@ -13,7 +13,7 @@ import { Category } from '../../category/entities/category.entity';
 
 @Entity()
 export class Book {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
