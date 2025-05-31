@@ -119,3 +119,7 @@ Content-Type: application/json
 DELETE {{url}}/book/1
 Content-Type: application/json
 
+
+###
+POST {{url}}/seed
+

@@ -23,7 +23,6 @@ import { SeedModule } from './modules/seed/seed.module';
       CategoryModule,
       BookReviewModule,
       SeedModule,
-  
   ],
   controllers: [],
   providers: [],

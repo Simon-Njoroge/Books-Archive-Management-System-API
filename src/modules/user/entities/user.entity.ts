@@ -17,10 +17,10 @@ export class User {
   @PrimaryGeneratedColumn()
   id: string;
 
-  @Column({ unique: true })
+  @Column({ unique: false })
   name: string;
 
-  @Column({ unique: true })
+  @Column({ unique: false })
   email: string;
 
   @Column()

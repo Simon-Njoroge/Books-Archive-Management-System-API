@@ -43,6 +43,7 @@ export class SeedService {
 
       for (let j = 0; j < this.BATCH_SIZE; j++) {
         const user = this.userRepository.create({
+          name:faker.person.fullName(),
           email: faker.internet.email(),
           password: faker.internet.password(),
         });

@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, In } from 'typeorm';
 import { Book } from './entities/book.entity';
 import { Category } from '../category/entities/category.entity';
-import { Author } from '../author/entities/author.entity'; // Import Author entity
+import { Author } from '../author/entities/author.entity'; 
 import { CreateBookDto } from './dto/create-book.dto';
 import { UpdateBookDto } from './dto/update-book.dto';
 
@@ -15,7 +15,7 @@ export class BookService {
     @InjectRepository(Category)
     private readonly categoryRepository: Repository<Category>,
     @InjectRepository(Author)
-    private readonly authorRepository: Repository<Author>, // Inject Author repository
+    private readonly authorRepository: Repository<Author>, 
   ) {}
 
   async create(createBookDto: CreateBookDto): Promise<Book> {
